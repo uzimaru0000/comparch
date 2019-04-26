@@ -9,8 +9,7 @@ A:  .word 0
     .word 0
     .word 0
     .word 0
-    .word 0
-    .word 3
+    .word 0 .word 3
     .word 0
     .word 0
     .word 4
