@@ -1,0 +1,51 @@
+
+// Verilog stimulus file.
+// Please do not create a module in this file.
+
+
+// Default verilog stimulus. 
+
+initial
+begin 
+
+   CLR = 1;
+
+   #50
+
+   CLR = 0;   
+
+   WriteData[31:0] = 32'h01250087;
+   WriteEN = 1;
+   WriteReg[4:0] = 1;
+
+   #150
+
+   WriteData[31:0] = 32'h00002019;
+   WriteEN = 1;
+   WriteReg[4:0] = 2;
+
+   #200
+
+   WriteEN = 0;
+   ReadReg1[4:0] = 1;
+   ReadReg2[4:0] = 2;
+
+   #200
+
+   $finish;
+   
+
+end 
+
+always
+  begin
+
+     CK = 0;
+
+     #100
+
+     CK = 1;
+
+     #100;
+     
+  end

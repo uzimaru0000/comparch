@@ -1,5 +1,5 @@
     .data
-N:  .word 5
+N:  .word 8
 FN: .word 0
 
 .text
