@@ -1,0 +1,80 @@
+// Verilog stimulus file.
+// Please do not create a module in this file.
+
+// Default verilog stimulus. 
+
+initial
+begin 
+
+// text segment
+Mem.cell['h00000000] = 32'h8c055000;   // lw $5, 20480($0) [A]
+Mem.cell['h00000004] = 32'h8c065004;   // lw $6, 20484($0) [B]
+Mem.cell['h00000008] = 32'h8c075008;   // lw $7, 20488($0) [C]
+Mem.cell['h0000000c] = 32'hace55000;   // sw $5, 20480($7) [A]
+Mem.cell['h00000010] = 32'h00a64020;   // add $8, $5, $6
+Mem.cell['h00000014] = 32'hac085010;   // sw $8, 20496($0) [ADD_RSLT]
+Mem.cell['h00000018] = 32'h00a64822;   // sub $9, $5, $6
+Mem.cell['h0000001c] = 32'hac095014;   // sw $9, 20500($0) [SUB_RSLT]
+Mem.cell['h00000020] = 32'h20aa0100;   // addi $10, $5, 256          
+Mem.cell['h00000024] = 32'hac0a5018;   // sw $10, 20504($0) [ADDI_RSLT]
+Mem.cell['h00000028] = 32'h00a65824;   // and $11, $5, $6              
+Mem.cell['h0000002c] = 32'hac0b501c;   // sw $11, 20508($0) [AND_RSLT]
+Mem.cell['h00000030] = 32'h00a66025;   // or $12, $5, $6              
+Mem.cell['h00000034] = 32'hac0c5020;   // sw $12, 20512($0) [OR_RSLT] 
+Mem.cell['h00000038] = 32'h30ad01ff;   // andi $13, $5, 511           
+Mem.cell['h0000003c] = 32'hac0d5024;   // sw $13, 20516($0) [ANDI_RSLT] 
+Mem.cell['h00000040] = 32'h34ae01ff;   // ori $14, $5, 511             
+Mem.cell['h00000044] = 32'hac0e5028;   // sw $14, 20520($0) [ORI_RSLT]
+Mem.cell['h00000048] = 32'h340f0001;   // ori $15, $0, 1             
+Mem.cell['h0000004c] = 32'h08000015;   // j 0x00000054 [skip1]        
+Mem.cell['h00000050] = 32'h340f0000;   // ori $15, $0, 0            
+Mem.cell['h00000054] = 32'hac0f502c;   // sw $15, 20524($0) [J_RSLT]
+Mem.cell['h00000058] = 32'h340f0001;   // ori $15, $0, 1            
+Mem.cell['h0000005c] = 32'h34100002;   // ori $16, $0, 2           
+Mem.cell['h00000060] = 32'h11f00001;   // beq $15, $16, 4 [skip2]
+Mem.cell['h00000064] = 32'h34100003;   // ori $16, $0, 3               
+Mem.cell['h00000068] = 32'hac105030;   // sw $16, 20528($0) [BEQ_NT_RSLT]
+Mem.cell['h0000006c] = 32'h34100001;   // ori $16, $0, 1              
+Mem.cell['h00000070] = 32'h11f00001;   // beq $15, $16, 4 [skip3]
+Mem.cell['h00000074] = 32'h34100003;   // ori $16, $0, 3               
+Mem.cell['h00000078] = 32'hac105034;   // sw $16, 20532($0) [BEQ_T_RSLT]
+Mem.cell['h0000007c] = 32'h00a6882a;   // slt $17, $5, $6               
+Mem.cell['h00000080] = 32'hac115038;   // sw $17, 20536($0) [SLT0_RSLT] 
+Mem.cell['h00000084] = 32'h00c5902a;   // slt $18, $6, $5               
+Mem.cell['h00000088] = 32'hac12503c;   // sw $18, 20540($0) [SLT1_RSLT] 
+Mem.cell['h0000008c] = 32'h28b31000;   // slti $19, $5, 4096            
+Mem.cell['h00000090] = 32'hac135040;   // sw $19, 20544($0) [SLTI0_RSLT]
+Mem.cell['h00000094] = 32'h28b45000;   // slti $20, $5, 20480           
+Mem.cell['h00000098] = 32'hac145044;   // sw $20, 20548($0) [SLTI1_RSLT]
+Mem.cell['h0000009c] = 32'h08000027;   // j 0x0000009c [exit]           
+
+// data segment
+Mem.cell['h00005000] = 32'h0000335e;
+Mem.cell['h00005004] = 32'h00000d21;
+Mem.cell['h00005008] = 32'h0000000c;
+
+   CK = 1'b1;
+   CLR = 1'b1;
+   #110
+   CLR = 1'b0;
+   #20000
+   $display("RESULT:");
+   $display("sw:   335e: %x",Mem.cell['h500c]);
+   $display("add:  407f: %x",Mem.cell['h5010]);
+   $display("sub:  263d: %x",Mem.cell['h5014]);
+   $display("addi: 345e: %x",Mem.cell['h5018]);
+   $display("and:   100: %x",Mem.cell['h501c]);
+   $display("or:   3f7f: %x",Mem.cell['h5020]);
+   $display("andi:  15e: %x",Mem.cell['h5024]);
+   $display("ori:  33ff: %x",Mem.cell['h5028]);
+   $display("j:       1: %x",Mem.cell['h502c]);
+   $display("beq_nt:  3: %x",Mem.cell['h5030]);
+   $display("beq_t:   1: %x",Mem.cell['h5034]);
+   $display("slt0:    0: %x",Mem.cell['h5038]);
+   $display("slt1:    1: %x",Mem.cell['h503c]);
+   $display("slti0:   0: %x",Mem.cell['h5040]);
+   $display("slti1:   1: %x",Mem.cell['h5044]);
+   $finish;
+end
+
+always #50 CK=~CK;

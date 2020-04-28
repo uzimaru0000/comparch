@@ -1,0 +1,67 @@
+// Verilog stimulus file.
+// Please do not create a module in this file.
+
+// Default verilog stimulus. 
+
+initial
+begin 
+// text segment
+Mem.cell['h00000000] = 32'h08000400;   // j 0x1000
+
+Mem.cell['h00001000] = 32'h00004025;   // or $8, $0, $0                   ; 17: or  $8, $0, $0 # i
+Mem.cell['h00001004] = 32'h34095004;   // ori $9, $0, 20484 [A]           ; 18: la  $9, A      # arr A
+Mem.cell['h00001008] = 32'h340a502c;   // ori $10, $0, 20524 [B]          ; 19: la  $10, B     # arr B
+Mem.cell['h0000100c] = 32'h8c0b5000;   // lw $11, 20480($0) [N]           ; 20: lw  $11, N     # N
+Mem.cell['h00001010] = 32'h110b0006;   // beq $8, $11, 24 [loopend-0x00001010]; 23: beq $8, $11, loopend
+Mem.cell['h00001014] = 32'h8d2c0000;   // lw $12, 0($9)                   ; 24: lw  $12, 0($9)
+Mem.cell['h00001018] = 32'had4c0000;   // sw $12, 0($10)                  ; 25: sw  $12, 0($10)
+Mem.cell['h0000101c] = 32'h21290004;   // addi $9, $9, 4                  ; 26: addi $9, 4
+Mem.cell['h00001020] = 32'h214a0004;   // addi $10, $10, 4                ; 27: addi $10, 4
+Mem.cell['h00001024] = 32'h21080001;   // addi $8, $8, 1                  ; 28: addi $8, 1
+Mem.cell['h00001028] = 32'h08000404;   // j 0x00001010 [loop]             ; 29: j loop
+Mem.cell['h0000102c] = 32'h0800040b;   // j 0x0000102c [exit]             ; 33: j exit
+
+// data segment
+Mem.cell['h00005000] = 32'h0000000a;
+Mem.cell['h00005004] = 32'h00000008;
+Mem.cell['h00005008] = 32'h00000004;
+Mem.cell['h0000500c] = 32'h00000007;
+Mem.cell['h00005010] = 32'h0000000c;
+Mem.cell['h00005014] = 32'h0000000d;
+Mem.cell['h00005018] = 32'h00000013;
+Mem.cell['h0000501c] = 32'h00000017;
+Mem.cell['h00005020] = 32'h0000002b;
+Mem.cell['h00005024] = 32'h00000038;
+Mem.cell['h00005028] = 32'h00000020;
+Mem.cell['h0000502c] = 32'h00000000;
+Mem.cell['h00005030] = 32'h00000000;
+Mem.cell['h00005034] = 32'h00000000;
+Mem.cell['h00005038] = 32'h00000000;
+Mem.cell['h0000503c] = 32'h00000000;
+Mem.cell['h00005040] = 32'h00000000;
+Mem.cell['h00005044] = 32'h00000000;
+Mem.cell['h00005048] = 32'h00000000;
+Mem.cell['h0000504c] = 32'h00000000;
+Mem.cell['h00005050] = 32'h00000000;
+
+   CK = 1'b1;
+   CLR = 1'b1;
+   #110
+   CLR = 1'b0;
+   #7400
+   $display("RESULT:");
+   $display("B[0] = %x", Mem.cell['h0000502c])
+   $display("B[1] = %x", Mem.cell['h00005030])
+   $display("B[2] = %x", Mem.cell['h00005034])
+   $display("B[3] = %x", Mem.cell['h00005038])
+   $display("B[4] = %x", Mem.cell['h0000503c])
+   $display("B[5] = %x", Mem.cell['h00005040])
+   $display("B[6] = %x", Mem.cell['h00005044])
+   $display("B[7] = %x", Mem.cell['h00005048])
+   $display("B[8] = %x", Mem.cell['h0000504c])
+   $display("B[9] = %x", Mem.cell['h00005050])
+
+   $finish;
+end
+
+always #50 CK=~CK;
